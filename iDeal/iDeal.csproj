@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>iDeal</RootNamespace>
     <AssemblyName>iDeal</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,7 +47,6 @@
     <Compile Include="Base\iDealRequest.cs" />
     <Compile Include="Base\iDealResponse.cs" />
     <Compile Include="Base\InvalidSignatureException.cs" />
-    <Compile Include="Base\StringExtensions.cs" />
     <Compile Include="Configuration\ConfigurationSectionHandler.cs" />
     <Compile Include="Configuration\DefaultConfiguration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
@@ -53,7 +54,6 @@
     <Compile Include="Directory\DirectoryRequest.cs" />
     <Compile Include="Directory\DirectoryResponse.cs" />
     <Compile Include="Directory\Issuer.cs" />
-    <Compile Include="Directory\ListType.cs" />
     <Compile Include="Http\iDealHttpRequest.cs" />
     <Compile Include="Http\iDealHttpResponseHandler.cs" />
     <Compile Include="Http\IiDealHttpRequest.cs" />

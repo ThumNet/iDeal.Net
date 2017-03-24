@@ -17,61 +17,41 @@ namespace iDeal.Status
         public Status Status { get; private set; }
 
         /// <summary>
-        /// Consumer name
+        /// Datetime when Status was set and verified (only set when Status= Success, Cancelled, Expired or Failure)
+        /// </summary>
+        public string StatusDateTimestamp { get; private set; }
+
+        /// <summary>
+        /// Consumer name (only set when Status= Success)
         /// </summary>
         public string ConsumerName { get; private set; }
 
         /// <summary>
-        /// Accountnumber of consumer
+        /// Accountnumber of consumer (only set when Status= Success)
         /// </summary>
         public string ConsumerIBAN { get; private set; }
 
         /// <summary>
-        /// Thumbprint of public certificate
-        /// </summary>
-        public string Fingerprint { get; private set; }
-
-        /// <summary>
-        /// Digital signature provided by the bank/acceptant
-        /// </summary>
-        public string SignatureValue { get; private set; }
-
-        /// <summary>
-        /// Concatenation of speficied fields from the reponse, used for digital signature
-        /// </summary>
-        public string MessageDigest
-        {
-            get
-            {
-                return createDateTimestamp +
-                       TransactionId +
-                       Status +
-                       (Status == Status.Success ? ConsumerIBAN : "");
-            }
-        }
-
-        /// <summary>
-        /// Consumer city
+        /// Consumer city (only set when Status= Success)
         /// </summary>
         public string ConsumerBIC { get; private set; }
 
-        public StatusResponse(string xmlStatusResponse)
+        /// <summary>
+        /// The amount garanteed by the Acquirer to the Merchant (only set when Status= Success)
+        /// </summary>
+        public decimal Amount { get; private set; }
+
+        /// <summary>
+        /// The currency of the garanteed amount (ISO 4217) (only set when Status= Success)
+        /// </summary>
+        public string Currency { get; private set; }
+
+        public StatusResponse(XElement xDocument)
+            : base(xDocument)
         {
-            // Parse document
-            var xDocument = XElement.Parse(xmlStatusResponse);
-            XNamespace xmlNamespace = "http://www.idealdesk.com/ideal/messages/mer-acq/3.3.1";
+            TransactionId = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "transactionID").Value;
 
-            // Create datetimestamp
-            createDateTimestamp = (xDocument.Element(xmlNamespace + "createDateTimestamp").Value);
-            
-            // Acquirer id
-            AcquirerId = (int)xDocument.Element(xmlNamespace + "Acquirer").Element(xmlNamespace + "acquirerID");
-
-            // TransactionId
-            TransactionId = xDocument.Element(xmlNamespace + "Transaction").Element(xmlNamespace + "transactionID").Value;
-
-            // Status
-            switch (xDocument.Element(xmlNamespace + "Transaction").Element(xmlNamespace + "status").Value)
+            switch (xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "status").Value)
             {
                 case "Success":
                     Status = Status.Success;
@@ -92,19 +72,19 @@ namespace iDeal.Status
                     throw new InvalidOperationException("Received unknown status");
             }
 
+            if (Status != Status.Open)
+            {
+                StatusDateTimestamp = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "statusDateTimestamp").Value;
+            }
+            
             if (Status == Status.Success)
             {
-                // Consumer name
-                ConsumerName = xDocument.Element(xmlNamespace + "Transaction").Element(xmlNamespace + "consumerName").Value;
-
-                // Consumer account number
-                ConsumerIBAN = xDocument.Element(xmlNamespace + "Transaction").Element(xmlNamespace + "consumerIBAN").Value;
-
-                // Consumer city
-                ConsumerBIC = xDocument.Element(xmlNamespace + "Transaction").Element(xmlNamespace + "consumerBIC").Value;
+                ConsumerName = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "consumerName").Value;
+                ConsumerIBAN = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "consumerIBAN").Value;
+                ConsumerBIC = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "consumerBIC").Value;
+                Amount = (decimal)xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "amount");
+                Currency = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "currency").Value;
             }
-
-
         }
     }
 }

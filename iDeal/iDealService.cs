@@ -6,7 +6,6 @@ using iDeal.Http;
 using iDeal.SignatureProviders;
 using iDeal.Status;
 using iDeal.Transaction;
-using iDeal.Base;
 
 namespace iDeal
 {
@@ -20,7 +19,8 @@ namespace iDeal
         /// <summary>
         /// Parameterless constructor using default configuration (read from .config file)
         /// </summary>
-        public iDealService() : this(new DefaultConfiguration( (ConfigurationSectionHandler)ConfigurationManager.GetSection("iDeal"))) { }
+        public iDealService() : 
+            this(new DefaultConfiguration( (ConfigurationSectionHandler)ConfigurationManager.GetSection("iDeal"))) { }
 
 
         public iDealService(IConfiguration configuration) : 
@@ -32,13 +32,13 @@ namespace iDeal
         public iDealService(IConfiguration configuration, ISignatureProvider signatureProvider, IiDealHttpRequest iDealHttpRequest, IiDealHttpResponseHandler iDealHttpResponseHandler)
         {
             // Configuration guard clauses
-            if (configuration.MerchantId.IsNullEmptyOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(configuration.MerchantId))
                 throw new ConfigurationErrorsException("Merchant Id is not set");
             if (configuration.MerchantId.Length > 9)
                 throw new ConfigurationErrorsException("Merchant Id cannot contain more as 9 characters");
             if (configuration.MerchantSubId < 0 || configuration.MerchantSubId > 6)
                 throw new ConfigurationErrorsException("SubId must contain a value ranging from 0 to 6");
-            if (configuration.AcquirerUrl.IsNullEmptyOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(configuration.AcquirerUrl))
                 throw new ConfigurationErrorsException("Url of acquirer is not set");
             if (configuration.AcceptantCertificate == null)
                 throw new ConfigurationErrorsException("Acceptant's certificate is not set");

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
 using iDeal.Base;
-using iDeal.SignatureProviders;
 
 namespace iDeal.Status
 {
@@ -17,51 +16,34 @@ namespace iDeal.Status
             get { return _transactionId; }
             private set
             {
-                if (value.IsNullEmptyOrWhiteSpace() || value.Length != 16)
+                if (string.IsNullOrEmpty(value) || value.Length != 16)
                     throw new InvalidOperationException("TransactionId must contain exactly 16 characters");
                 _transactionId = value;
             }
         }
 
-        public override string MessageDigest
-        {
-            get
-            {
-                return createDateTimestamp +
-                       MerchantId.PadLeft(9, '0') +
-                       MerchantSubId +
-                       TransactionId;
-            }
-        }
-
         public StatusRequest(string merchantId, int? subId, string transactionId)
+            : base (merchantId, subId)
         {
-            MerchantId = merchantId;
-            MerchantSubId = subId ?? 0; // If no sub id is specified, sub id should be 0
             TransactionId = transactionId;
         }
 
-        public override string ToXml(ISignatureProvider signatureProvider)
+        protected override XDocument CreateXml()
         {
-            XNamespace xmlNamespace = "http://www.idealdesk.com/ideal/messages/mer-acq/3.3.1";
-
-            var directoryRequestXmlMessage =
-                new XDocument(
+            return new XDocument(
                     new XDeclaration("1.0", "UTF-8", null),
-                    new XElement(xmlNamespace + "AcquirerStatusReq",
+                    new XElement(XmlNamespace + "AcquirerStatusReq",
                         new XAttribute("version", "3.3.1"),
-                        new XElement(xmlNamespace + "createDateTimestamp", createDateTimestamp),
-                        new XElement(xmlNamespace + "Merchant",
-                            new XElement(xmlNamespace + "merchantID", MerchantId.PadLeft(9, '0')),
-                            new XElement(xmlNamespace + "subID", MerchantSubId)
+                        new XElement(XmlNamespace + "createDateTimestamp", createDateTimestamp),
+                        new XElement(XmlNamespace + "Merchant",
+                            new XElement(XmlNamespace + "merchantID", MerchantId.PadLeft(9, '0')),
+                            new XElement(XmlNamespace + "subID", MerchantSubId)
                         ),
-                        new XElement(xmlNamespace + "Transaction",
-                            new XElement(xmlNamespace + "transactionID", TransactionId)
+                        new XElement(XmlNamespace + "Transaction",
+                            new XElement(XmlNamespace + "transactionID", TransactionId)
                         )
                     )
                 );
-
-            return signatureProvider.SignXml(directoryRequestXmlMessage);
         }
     }
 }

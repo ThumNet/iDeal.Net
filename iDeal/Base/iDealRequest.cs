@@ -1,11 +1,13 @@
 ﻿using System;
 using iDeal.SignatureProviders;
-using iDeal.Base;
+using System.Xml.Linq;
 
 namespace iDeal.Base
 {
     public abstract class iDealRequest
     {
+        protected readonly XNamespace XmlNamespace = "http://www.idealdesk.com/ideal/messages/mer-acq/3.3.1";
+
         protected string _merchantId;
         protected int _subId;
 
@@ -17,7 +19,7 @@ namespace iDeal.Base
             get { return _merchantId; }
             protected set
             {
-                if (value.IsNullEmptyOrWhiteSpace())
+                if (string.IsNullOrWhiteSpace(value))
                     throw new InvalidOperationException("MerchantId does not contain a value");
                 if (value.Contains(" "))
                     throw new InvalidOperationException("MerchantId cannot contain whitespaces");
@@ -46,12 +48,18 @@ namespace iDeal.Base
         /// </summary>
         public string createDateTimestamp { get; private set; }
 
-        public abstract string MessageDigest { get; }
+        protected abstract XDocument CreateXml();
 
-        public abstract string ToXml(ISignatureProvider signatureProvider);
-
-        protected iDealRequest()
+        public string CreateAndSignXml(ISignatureProvider signatureProvider)
         {
+            var xDoc = CreateXml();
+            return signatureProvider.SignXml(xDoc);
+        }
+
+        protected iDealRequest(string merchantId, int? subId)
+        {
+            MerchantId = merchantId;
+            MerchantSubId = subId ?? 0; // If no sub id is specified, sub id should be 0
             createDateTimestamp = DateTime.Now.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 
 namespace iDeal.Configuration
@@ -106,11 +105,11 @@ namespace iDeal.Configuration
     public class MerchantElement : ConfigurationElement
     {
         [ConfigurationProperty("id", IsRequired = true)]
-        public String Id
+        public string Id
         {
             get
             {
-                return (String)this["id"];
+                return (string)this["id"];
             }
         }
 
@@ -124,11 +123,11 @@ namespace iDeal.Configuration
     public class AcquirerElement : ConfigurationElement
     {
         [ConfigurationProperty("url", IsRequired = true)]
-        public String Url
+        public string Url
         {
             get
             {
-                return (String)this["url"];
+                return (string)this["url"];
             }
         }
     }
@@ -136,11 +135,11 @@ namespace iDeal.Configuration
     public class AcceptantCertificateElement : ConfigurationElement
     {
         [ConfigurationProperty("thumbprint", IsRequired = false)]
-        public String Thumbprint
+        public string Thumbprint
         {
             get
             {
-                return (String)this["thumbprint"];
+                return (string)this["thumbprint"];
             }
         }
 
@@ -154,29 +153,29 @@ namespace iDeal.Configuration
         }
 
         [ConfigurationProperty("storeName", IsRequired = false)]
-        public String StoreName
+        public string StoreName
         {
             get
             {
-                return (String)this["storeName"];
+                return (string)this["storeName"];
             }
         }
 
         [ConfigurationProperty("filename", IsRequired = false)]
-        public String Filename
+        public string Filename
         {
             get
             {
-                return (String)this["filename"];
+                return (string)this["filename"];
             }
         }
 
         [ConfigurationProperty("password", IsRequired = false)]
-        public String Password
+        public string Password
         {
             get
             {
-                return (String)this["password"];
+                return (string)this["password"];
             }
         }
     }
@@ -184,11 +183,11 @@ namespace iDeal.Configuration
     public class AcquirerCertificateElement : ConfigurationElement
     {
         [ConfigurationProperty("thumbprint", IsRequired = false)]
-        public String Thumbprint
+        public string Thumbprint
         {
             get
             {
-                return (String)this["thumbprint"];
+                return (string)this["thumbprint"];
             }
         }
 
@@ -202,20 +201,20 @@ namespace iDeal.Configuration
         }
 
         [ConfigurationProperty("storeName", IsRequired = false)]
-        public String StoreName
+        public string StoreName
         {
             get
             {
-                return (String)this["storeName"];
+                return (string)this["storeName"];
             }
         }
 
         [ConfigurationProperty("filename", IsRequired = false)]
-        public String Filename
+        public string Filename
         {
             get
             {
-                return (String)this["filename"];
+                return (string)this["filename"];
             }
         }
     }

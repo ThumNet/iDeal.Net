@@ -6,7 +6,6 @@
 
         public string Name { get; private set; }
 
-
         public Issuer(string id, string name)
         {
             Id = id;

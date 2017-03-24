@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using iDeal.Base;
 
 namespace iDeal.Transaction
@@ -17,30 +16,23 @@ namespace iDeal.Transaction
         public string TransactionId { get; private set; }
 
         /// <summary>
+        /// Datetime when the transaction was first registered by the Acquirer
+        /// </summary>
+        public string TransactionCreateDateTimestamp { get; private set; }
+
+        /// <summary>
         /// Unique id determined by the acceptant, which will eventuelly show on the bank account
         /// </summary>
         public string PurchaseId { get; private set; }
 
-        public TransactionResponse(string xmlDirectoryResponse)
+        public TransactionResponse(XElement xDocument)
+            : base(xDocument)
         {
-            // Parse document
-            var xDocument = XElement.Parse(xmlDirectoryResponse);
-            XNamespace xmlNamespace = "http://www.idealdesk.com/ideal/messages/mer-acq/3.3.1";
-
-            // Create datetimestamp
-            createDateTimestamp = xDocument.Element(xmlNamespace + "createDateTimestamp").Value;
-            
-            // Acquirer id
-            AcquirerId = (int)xDocument.Element(xmlNamespace + "Acquirer").Element(xmlNamespace + "acquirerID");
-
-            // IssuerAuthenticationUrl
-            IssuerAuthenticationUrl = xDocument.Element(xmlNamespace + "Issuer").Element(xmlNamespace + "issuerAuthenticationURL").Value;
-
-            // TransactionId
-            TransactionId = xDocument.Element(xmlNamespace + "Transaction").Element(xmlNamespace + "transactionID").Value;
-
-            // PurchaseId
-            PurchaseId = xDocument.Element(xmlNamespace + "Transaction").Element(xmlNamespace + "purchaseID").Value;
+            IssuerAuthenticationUrl = xDocument.Element(XmlNamespace + "Issuer").Element(XmlNamespace + "issuerAuthenticationURL").Value;
+            TransactionId = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "transactionID").Value;
+            TransactionId = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "transactionID").Value;
+            TransactionCreateDateTimestamp = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "transactionCreateDateTimestamp").Value;
+            PurchaseId = xDocument.Element(XmlNamespace + "Transaction").Element(XmlNamespace + "purchaseID").Value;
         }
     }
 }

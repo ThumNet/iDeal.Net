@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Security;
+﻿using System.IO;
 using System.Xml.Linq;
 using iDeal.Base;
 using iDeal.Directory;
@@ -23,17 +21,13 @@ namespace iDeal.Http
             switch (xDocument.Name.LocalName)
             {
                 case "DirectoryRes":
-                    return new DirectoryResponse(response);
+                    return new DirectoryResponse(xDocument);
                 
                 case "AcquirerTrxRes":
-                    return new TransactionResponse(response);
+                    return new TransactionResponse(xDocument);
                 
                 case "AcquirerStatusRes":
-                    var statusResponse = new StatusResponse(response);
-
-                    
-                        
-                    return statusResponse;
+                    return new StatusResponse(xDocument);
 
                 case "AcquirerErrorRes":
                     throw new iDealException(xDocument);

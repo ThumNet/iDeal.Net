@@ -19,31 +19,21 @@ namespace iDeal.Directory
             get { return new ReadOnlyCollection<Issuer>(_issuers); }
         }
 
-        public DirectoryResponse(string xmlDirectoryResponse)
+        public DirectoryResponse(XElement xDocument)
+            : base(xDocument)
         {
-            // Parse document
-            var xDocument = XElement.Parse(xmlDirectoryResponse);
-            XNamespace xmlNamespace = "http://www.idealdesk.com/ideal/messages/mer-acq/3.3.1";
-
-            // Create datetimestamp
-            createDateTimestamp = xDocument.Element(xmlNamespace + "createDateTimestamp").Value;
-            
-            // Acquirer id
-            AcquirerId = (int)xDocument.Element(xmlNamespace + "Acquirer").Element(xmlNamespace + "acquirerID");
-
-            // Directory datetimestamp
-            DirectoryDateTimeStamp = xDocument.Element(xmlNamespace + "Directory").Element(xmlNamespace + "directoryDateTimestamp").Value;
+            DirectoryDateTimeStamp = xDocument.Element(XmlNamespace + "Directory").Element(XmlNamespace + "directoryDateTimestamp").Value;
           
             // Get list of countries
-            foreach (var country in xDocument.Element(xmlNamespace + "Directory").Elements(xmlNamespace + "Country"))
+            foreach (var country in xDocument.Element(XmlNamespace + "Directory").Elements(XmlNamespace + "Country"))
             {
               // Get list of issuers
-              foreach (var issuer in country.Elements(xmlNamespace + "Issuer"))
+              foreach (var issuer in country.Elements(XmlNamespace + "Issuer"))
               {
                   _issuers.Add(
                           new Issuer(
-                                  issuer.Element(xmlNamespace + "issuerID").Value,
-                                  issuer.Element(xmlNamespace + "issuerName").Value
+                                  issuer.Element(XmlNamespace + "issuerID").Value,
+                                  issuer.Element(XmlNamespace + "issuerName").Value
                               )
                       );
               }
