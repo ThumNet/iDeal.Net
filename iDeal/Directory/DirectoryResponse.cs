@@ -23,20 +23,21 @@ namespace iDeal.Directory
             : base(xDocument)
         {
             DirectoryDateTimeStamp = xDocument.Element(XmlNamespace + "Directory").Element(XmlNamespace + "directoryDateTimestamp").Value;
-          
+
             // Get list of countries
             foreach (var country in xDocument.Element(XmlNamespace + "Directory").Elements(XmlNamespace + "Country"))
             {
-              // Get list of issuers
-              foreach (var issuer in country.Elements(XmlNamespace + "Issuer"))
-              {
-                  _issuers.Add(
-                          new Issuer(
-                                  issuer.Element(XmlNamespace + "issuerID").Value,
-                                  issuer.Element(XmlNamespace + "issuerName").Value
-                              )
-                      );
-              }
+                // Get list of issuers
+                foreach (var issuer in country.Elements(XmlNamespace + "Issuer"))
+                {
+                    _issuers.Add(
+                            new Issuer(
+                                    issuer.Element(XmlNamespace + "issuerID").Value,
+                                    issuer.Element(XmlNamespace + "issuerName").Value,
+                                    country.Element(XmlNamespace + "countryNames").Value
+                                )
+                        );
+                }
             }
         }
     }

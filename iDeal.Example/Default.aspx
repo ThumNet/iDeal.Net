@@ -9,8 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <h1> Commands:</h1> 
-            <asp:Button runat="server" ID="btnDirReq" Text="DirectoryRequest" OnClick="btnDirReq_Click" /> <br />
+            <h1>Commands:</h1>
+            <asp:Button runat="server" ID="btnDirReq" Text="DirectoryRequest" OnClick="btnDirReq_Click" />
+            <br />
             <asp:Button runat="server" ID="btnTransaction1" Text="Transaction" OnClick="btnTransaction1_Click" /><br />
             <asp:Button runat="server" ID="btnStatus1" Text="Status" OnClick="btnStatus1_Click" /><br />
             Amount:<input runat="server" id="txtAmount" value="1" />euro<br />
@@ -18,24 +19,28 @@
         <hr />
         <h2>Results:</h2>
 
-         <div runat="server" id="logResult"></div>
+        <div runat="server" id="logResult"></div>
 
-        <table runat="server" ID="tableError">
+        <table runat="server" id="tableError">
             <tr>
                 <td>Error Code</td>
-                <td><asp:Label runat="server" ID="lblErrorCode"></asp:Label></td>
+                <td>
+                    <asp:Label runat="server" ID="lblErrorCode"></asp:Label></td>
             </tr>
             <tr>
                 <td>Error Message</td>
-                <td><asp:Label runat="server" ID="lblErrorMessage"></asp:Label></td>
+                <td>
+                    <asp:Label runat="server" ID="lblErrorMessage"></asp:Label></td>
             </tr>
             <tr>
                 <td>Error Detail</td>
-                <td><asp:Label runat="server" ID="lblErrorDetail"></asp:Label></td>
+                <td>
+                    <asp:Label runat="server" ID="lblErrorDetail"></asp:Label></td>
             </tr>
             <tr>
                 <td>Consumer Message</td>
-                <td><asp:Label runat="server" ID="lblConsumerMessage"></asp:Label></td>
+                <td>
+                    <asp:Label runat="server" ID="lblConsumerMessage"></asp:Label></td>
             </tr>
         </table>
     </form>

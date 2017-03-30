@@ -6,10 +6,13 @@
 
         public string Name { get; private set; }
 
-        public Issuer(string id, string name)
+        public string CountryNames { get; private set; }
+
+        public Issuer(string id, string name, string countryNames)
         {
             Id = id;
             Name = name;
+            CountryNames = countryNames;
         }
     }
 }

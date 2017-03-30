@@ -90,7 +90,7 @@ The response contains the status, which can be Success, Failure, Cancelled, Open
 
 ## Certificates
 In order to use iDeal you need to create (or buy) a certificate. The public key needs to be uploaded to your iDeal dashboard so they are able to verify your messages/requests. To create a self-signed certifcate you can use openSSL
-Download and install openSSL from http://www.openssl.org/related/binaries.html
+Download and install openSSL from http://www.openssl.org/ or https://slproweb.com/products/Win32OpenSSL.html
 then from the command prompt run the following commands:
 
   * openssl genrsa -aes128 -out private.pem -passout pass:[YOUR PRIVATE PASSWORD] 2048
